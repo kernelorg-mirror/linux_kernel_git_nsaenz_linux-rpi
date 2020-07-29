@@ -37,7 +37,7 @@
 
 		cma: linux,cma {
 			compatible = "shared-dma-pool";
-			size = <0x4000000>; /* 64MB */
+			size = <0xc000000>; /* 192MB */
 			reusable;
 			linux,cma-default;
 		};
