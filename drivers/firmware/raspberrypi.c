@@ -237,9 +237,16 @@ static void rpi_firmware_delete(struct kref *kref)
 	kfree(fw);
 }
 
+static void __rpi_firmware_put(void *data)
+{
+	struct rpi_firmware *fw = data;
+
+	kref_put(&fw->consumers, rpi_firmware_delete);
+}
+
 void rpi_firmware_put(struct rpi_firmware *fw)
 {
-	kref_put(&fw->consumers, rpi_firmware_delete);
+	__rpi_firmware_put(fw);
 }
 EXPORT_SYMBOL_GPL(rpi_firmware_put);
 
@@ -325,6 +332,28 @@ struct rpi_firmware *rpi_firmware_get(struct device_node *firmware_node)
 	return fw;
 }
 EXPORT_SYMBOL_GPL(rpi_firmware_get);
+
+/**
+ * devm_rpi_firmware_get - Get pointer to rpi_firmware structure.
+ * @firmware_node:    Pointer to the firmware Device Tree node.
+ *
+ * Returns NULL is the firmware device is not ready.
+ */
+struct rpi_firmware *devm_rpi_firmware_get(struct device *dev,
+					   struct device_node *firmware_node)
+{
+	struct rpi_firmware *fw;
+
+	fw = rpi_firmware_get(firmware_node);
+	if (!fw)
+		return NULL;
+
+	if (devm_add_action_or_reset(dev, __rpi_firmware_put, fw))
+		return NULL;
+
+	return fw;
+}
+EXPORT_SYMBOL_GPL(devm_rpi_firmware_get);
 
 static const struct of_device_id rpi_firmware_of_match[] = {
 	{ .compatible = "raspberrypi,bcm2835-firmware", },
