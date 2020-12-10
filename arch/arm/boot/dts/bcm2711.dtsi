@@ -31,6 +31,11 @@
 		clock-output-names = "108MHz-clock";
 	};
 
+	fw-eeprom {
+		compatible = "nvmem-rmem";
+		memory-region = <&fw_config>;
+	};
+
 	soc {
 		/*
 		 * Defined ranges:
@@ -999,6 +1004,12 @@
 
 &rmem {
 	#address-cells = <2>;
+
+	fw_config: fw-confg {
+		compatible = "shared-dma-pool";
+		reg = <0x0 0x10000000 0x00040000>;
+		no-map;
+	};
 };
 
 &cma {
