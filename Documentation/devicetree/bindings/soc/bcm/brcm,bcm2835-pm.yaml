@@ -21,18 +21,20 @@ properties:
     items:
       - enum:
           - brcm,bcm2835-pm
+          - brcm,bcm2711-pm
       - const: brcm,bcm2835-pm-wdt
 
   reg:
     minItems: 1
-    maxItems: 2
+    maxItems: 3
 
   reg-names:
     minItems: 1
-    maxItems: 2
+    maxItems: 3
     items:
       - const: pm
       - const: rpivid_asb
+      - const: argon_asb
 
   "#power-domain-cells":
     const: 1
@@ -76,7 +78,7 @@ examples:
         #reset-cells = <1>;
         reg = <0x7e100000 0x114>,
               <0x7e00a000 0x24>;
-        reg-names = "pm", "rpivid_asb";
+        reg-names = "pm", "rpivid_asb", "argon_asb";
         clocks = <&clocks BCM2835_CLOCK_V3D>,
         	 <&clocks BCM2835_CLOCK_PERI_IMAGE>,
         	 <&clocks BCM2835_CLOCK_H264>,
