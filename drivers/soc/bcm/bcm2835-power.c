@@ -126,8 +126,8 @@
 
 #define ASB_AXI_BRDG_ID			0x20
 
-#define ASB_READ(reg) readl(power->asb + (reg))
-#define ASB_WRITE(reg, val) writel(PM_PASSWORD | (val), power->asb + (reg))
+#define ASB_READ(reg) readl(power->rpivid_asb + (reg))
+#define ASB_WRITE(reg, val) writel(PM_PASSWORD | (val), power->rpivid_asb + (reg))
 
 struct bcm2835_power_domain {
 	struct generic_pm_domain base;
@@ -140,8 +140,8 @@ struct bcm2835_power {
 	struct device		*dev;
 	/* PM registers. */
 	void __iomem		*base;
-	/* AXI Async bridge registers. */
-	void __iomem		*asb;
+	/* RPiVid bridge registers. */
+	void __iomem		*rpivid_asb;
 
 	struct genpd_onecell_data pd_xlate;
 	struct bcm2835_power_domain domains[BCM2835_POWER_DOMAIN_COUNT];
@@ -625,7 +625,7 @@ static int bcm2835_power_probe(struct platform_device *pdev)
 
 	power->dev = dev;
 	power->base = pm->base;
-	power->asb = pm->asb;
+	power->rpivid_asb = pm->rpivid_asb;
 
 	id = ASB_READ(ASB_AXI_BRDG_ID);
 	if (id != 0x62726467 /* "BRDG" */) {

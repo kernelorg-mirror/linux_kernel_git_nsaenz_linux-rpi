@@ -50,15 +50,15 @@ static int bcm2835_pm_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-	/* We'll use the presence of the AXI ASB regs in the
+	/* We'll use the presence of the RPiVid ASB regs in the
 	 * bcm2835-pm binding as the key for whether we can reference
 	 * the full PM register range and support power domains.
 	 */
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
 	if (res) {
-		pm->asb = devm_ioremap_resource(dev, res);
-		if (IS_ERR(pm->asb))
-			return PTR_ERR(pm->asb);
+		pm->rpivid_asb = devm_ioremap_resource(dev, res);
+		if (IS_ERR(pm->rpivid_asb))
+			return PTR_ERR(pm->rpivid_asb);
 
 		ret = devm_mfd_add_devices(dev, -1,
 					   bcm2835_power_devs,
