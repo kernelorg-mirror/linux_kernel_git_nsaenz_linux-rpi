@@ -26,8 +26,13 @@ properties:
   reg:
     minItems: 1
     maxItems: 2
-    description: Specifies base physical address and size of the two register
-                 ranges, "PM" and "ASYNC_BRIDGE" in that order.
+
+  reg-names:
+    minItems: 1
+    maxItems: 2
+    items:
+      - const: pm
+      - const: rpivid_asb
 
   "#power-domain-cells":
     const: 1
@@ -54,6 +59,7 @@ properties:
 required:
   - compatible
   - reg
+  - reg-names
   - "#power-domain-cells"
   - "#reset-cells"
   - clocks
@@ -70,6 +76,7 @@ examples:
         #reset-cells = <1>;
         reg = <0x7e100000 0x114>,
               <0x7e00a000 0x24>;
+        reg-names = "pm", "rpivid_asb";
         clocks = <&clocks BCM2835_CLOCK_V3D>,
         	 <&clocks BCM2835_CLOCK_PERI_IMAGE>,
         	 <&clocks BCM2835_CLOCK_H264>,
