@@ -126,7 +126,7 @@ struct pagesets {
 	local_lock_t lock;
 };
 static DEFINE_PER_CPU(struct pagesets, pagesets) = {
-	.lock = INIT_LOCAL_LOCK(lock),
+	.lock = INIT_LOCAL_LOCK(pagesets.lock),
 };
 
 #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
