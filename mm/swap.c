@@ -52,7 +52,7 @@ struct lru_rotate {
 	struct pagevec pvec;
 };
 static DEFINE_PER_CPU(struct lru_rotate, lru_rotate) = {
-	.lock = INIT_LOCAL_LOCK(lock),
+	.lock = INIT_LOCAL_LOCK(lru_rotate.lock),
 };
 
 /*
@@ -70,7 +70,7 @@ struct lru_pvecs {
 #endif
 };
 static DEFINE_PER_CPU(struct lru_pvecs, lru_pvecs) = {
-	.lock = INIT_LOCAL_LOCK(lock),
+	.lock = INIT_LOCAL_LOCK(lru_pvecs.lock),
 };
 
 /*
