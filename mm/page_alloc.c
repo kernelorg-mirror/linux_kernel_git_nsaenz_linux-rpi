@@ -3202,6 +3202,8 @@ static void __drain_all_pages(struct zone *zone, bool force_all_cpus)
 	if (!force_all_cpus && cpumask_empty(&cpus_with_pcps))
 	       goto exit;
 
+	__count_vm_event(PCPDRAIN);
+
 	for_each_cpu(cpu, &cpus_with_pcps) {
 	       for_each_populated_zone(z) {
 		       if (zone && zone != z)

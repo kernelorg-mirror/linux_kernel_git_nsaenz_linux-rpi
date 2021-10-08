@@ -1289,6 +1289,7 @@ const char * const vmstat_text[] = {
 
 	"drop_pagecache",
 	"drop_slab",
+	"pcpdrain",
 	"oom_kill",
 
 #ifdef CONFIG_NUMA_BALANCING
