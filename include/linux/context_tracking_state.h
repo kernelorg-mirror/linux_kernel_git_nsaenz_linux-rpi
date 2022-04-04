@@ -6,6 +6,10 @@
 #include <linux/static_key.h>
 #include <linux/context_tracking_irq.h>
 
+#ifdef CONFIG_HAVE_CONTEXT_TRACKING_WORK
+#include <asm/context_tracking_work.h>
+#endif
+
 /* Offset to allow distinguishing irq vs. task-based idle entry/exit. */
 #define DYNTICK_IRQ_NONIDLE	((LONG_MAX / 2) + 1)
 
@@ -35,6 +39,7 @@ struct context_tracking {
 	bool active;
 	int recursion;
 #endif
+	atomic_t work;
 	atomic_t state;
 	long dynticks_nesting;		/* Track process nesting level. */
 	long dynticks_nmi_nesting;	/* Track irq/NMI nesting level. */

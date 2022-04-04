@@ -135,4 +135,7 @@ static inline void ct_idle_enter(void) { }
 static inline void ct_idle_exit(void) { }
 #endif /* !CONFIG_CONTEXT_TRACKING */
 
+extern bool context_tracking_set_cpu_work(unsigned int cpu,unsigned int context,
+					  unsigned int work);
+
 #endif
