@@ -345,11 +345,17 @@ static void __cpa_flush_all(void *arg)
 		wbinvd();
 }
 
+static bool __cpa_flush_all_cond(int cpu, void *info)
+{
+	return !context_tracking_set_cpu_work(cpu, CONTEXT_USER | CONTEXT_GUEST,
+					CONTEXT_WORK_TLBI | CONTEXT_WORK_CACHEI);
+}
+
 static void cpa_flush_all(unsigned long cache)
 {
 	BUG_ON(irqs_disabled() && !early_boot_irqs_disabled);
 
-	on_each_cpu(__cpa_flush_all, (void *) cache, 1);
+	on_each_cpu_cond(__cpa_flush_all_cond, __cpa_flush_all, (void *)cache, 1);
 }
 
 static void __cpa_flush_tlb(void *data)

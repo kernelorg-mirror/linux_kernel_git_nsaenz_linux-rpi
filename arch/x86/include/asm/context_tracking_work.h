@@ -7,12 +7,14 @@
 enum {
 	CONTEXT_WORK_SYNC_OFFSET,
 	CONTEXT_WORK_TLBI_OFFSET,
+	CONTEXT_WORK_CACHEI_OFFSET,
 	CONTEXT_WORK_MAX_OFFSET
 };
 
 enum ct_work {
 	CONTEXT_WORK_SYNC = BIT(CONTEXT_WORK_SYNC_OFFSET),
 	CONTEXT_WORK_TLBI = BIT(CONTEXT_WORK_TLBI_OFFSET),
+	CONTEXT_WORK_CACHEI = BIT(CONTEXT_WORK_CACHEI_OFFSET),
 	CONTEXT_WORK_MAX = BIT(CONTEXT_WORK_MAX_OFFSET)
 };
 
@@ -37,6 +39,9 @@ static __always_inline void arch_context_tracking_work(int work)
 		}
 
 		__flush_tlb_all();
+		break;
+	case CONTEXT_WORK_CACHEI:
+		wbinvd();
 		break;
 	}
 }
